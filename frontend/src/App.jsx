@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useEffect, useState } from "react";
 import { useGeolocation } from './hooks/useGeolocation';
 import MapView from './components/Map/MapView';
 import MarkDisplay from './components/Discovery/MarkDisplay';
 import CreateMark from './components/Create/CreateMark';
 import SnapshotView from './components/Snapshot/SnapshotView';
+
 import './App.css';
 
 function App() {
@@ -13,6 +14,12 @@ function App() {
   const [parentMark, setParentMark] = useState(null);
 
   const { location } = useGeolocation();
+
+  useEffect(() => {
+    console.log("SUPABASE URL:", import.meta.env.VITE_SUPABASE_URL);
+    console.log("ANON KEY EXISTS:", !!import.meta.env.VITE_SUPABASE_ANON_KEY);
+  }, []);
+
 
   const handleMarkClick = (mark) => {
     setSelectedMark(mark);
