@@ -1,0 +1,218 @@
+.map-container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.map-loading,
+.map-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  padding: 2rem;
+  text-align: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.map-error h2 {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.map-error p {
+  font-size: 1rem;
+  margin: 0.5rem 0;
+  opacity: 0.9;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-top: 4px solid white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.nearby-indicator {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 24px;
+  font-size: 14px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  backdrop-filter: blur(10px);
+}
+
+.pulse {
+  width: 12px;
+  height: 12px;
+  background: #4ade80;
+  border-radius: 50%;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.2);
+  }
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  .nearby-indicator {
+    top: 10px;
+    padding: 10px 20px;
+    font-size: 13px;
+  }
+
+  .map-loading p,
+  .map-error p {
+    font-size: 0.9rem;
+  }
+
+  .map-error h2 {
+    font-size: 1.5rem;
+  }
+}
+
+/* Ensure map fills viewport on mobile */
+.map-container > div {
+  width: 100% !important;
+  height: 100vh !important;
+}
+
+/* Map controls */
+.map-controls {
+  position: absolute;
+  bottom: 140px;
+  left: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 1000;
+}
+
+.map-control-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: white;
+  border: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 1.5rem;
+  color: #374151;
+}
+
+.map-control-btn:hover {
+  background: #f3f4f6;
+  transform: scale(1.05);
+}
+
+.map-control-btn:active {
+  transform: scale(0.95);
+  background: #e5e7eb;
+}
+
+.recenter-btn {
+  margin-top: 8px;
+}
+
+.recenter-icon {
+  font-size: 1.25rem;
+  color: #4285F4;
+}
+
+/* Distance hint */
+.distance-hint {
+  position: absolute;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(55, 65, 81, 0.9);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  animation: fadeInUp 0.3s ease;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* Mobile optimizations for controls */
+@media (max-width: 768px) {
+  .map-controls {
+    bottom: 120px;
+    left: 12px;
+  }
+
+  .map-control-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 1.25rem;
+  }
+
+  .distance-hint {
+    bottom: 80px;
+    font-size: 12px;
+    padding: 8px 16px;
+  }
+}
+
+/* Safe area adjustments */
+@supports (padding: max(0px)) {
+  .map-controls {
+    left: max(16px, env(safe-area-inset-left) + 8px);
+    bottom: max(140px, env(safe-area-inset-bottom) + 100px);
+  }
+}
