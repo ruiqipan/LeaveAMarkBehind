@@ -258,11 +258,46 @@
 
   .mark-display-card {
     max-width: 100%;
-    border-radius: 16px 16px 0 0;
+    border-radius: 20px 20px 0 0;
     max-height: 85vh;
+    animation: slideUpMobile 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .mark-display-card::before {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 4px;
+    background: #d1d5db;
+    border-radius: 2px;
+    margin: 12px auto 8px;
+  }
+
+  .mark-header {
+    padding-top: 0.5rem;
   }
 
   .mark-content-text p {
     font-size: 1rem;
+  }
+}
+
+@keyframes slideUpMobile {
+  from {
+    transform: translateY(100%);
+    opacity: 0.5;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Safe area for bottom sheet */
+@supports (padding: max(0px)) {
+  @media (max-width: 768px) {
+    .mark-display-card {
+      padding-bottom: env(safe-area-inset-bottom);
+    }
   }
 }

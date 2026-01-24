@@ -3,8 +3,8 @@ import { GoogleMap, useLoadScript, Marker, Circle } from '@react-google-maps/api
 import { useGeolocation } from '../../hooks/useGeolocation';
 import { useProximity } from '../../hooks/useProximity';
 import { getMarksInBounds } from '../../services/marksService';
-import { getBoundingBox, PROXIMITY_RADIUS } from '../../utils/geofencing';
-import LocationMarker from './LocationMarker';
+import { PROXIMITY_RADIUS } from '../../utils/geofencing';
+import MarkBubble from './MarkBubble';
 import './MapView.css';
 
 const mapContainerStyle = {
@@ -17,20 +17,64 @@ const defaultCenter = {
   lng: -122.4194,
 };
 
+// Custom map styles for a clean, modern look
+const mapStyles = [
+  {
+    featureType: 'poi',
+    elementType: 'labels',
+    stylers: [{ visibility: 'off' }],
+  },
+  {
+    featureType: 'transit',
+    elementType: 'labels',
+    stylers: [{ visibility: 'off' }],
+  },
+  {
+    featureType: 'road',
+    elementType: 'labels.icon',
+    stylers: [{ visibility: 'off' }],
+  },
+  {
+    featureType: 'water',
+    elementType: 'geometry',
+    stylers: [{ color: '#e9e9e9' }, { lightness: 17 }],
+  },
+  {
+    featureType: 'landscape',
+    elementType: 'geometry',
+    stylers: [{ color: '#f5f5f5' }, { lightness: 20 }],
+  },
+  {
+    featureType: 'road.highway',
+    elementType: 'geometry.fill',
+    stylers: [{ color: '#ffffff' }, { lightness: 17 }],
+  },
+  {
+    featureType: 'road.highway',
+    elementType: 'geometry.stroke',
+    stylers: [{ color: '#ffffff' }, { lightness: 29 }, { weight: 0.2 }],
+  },
+  {
+    featureType: 'road.arterial',
+    elementType: 'geometry',
+    stylers: [{ color: '#ffffff' }, { lightness: 18 }],
+  },
+  {
+    featureType: 'road.local',
+    elementType: 'geometry',
+    stylers: [{ color: '#ffffff' }, { lightness: 16 }],
+  },
+];
+
 const mapOptions = {
-  disableDefaultUI: false,
-  zoomControl: true,
+  disableDefaultUI: true,
+  zoomControl: false,
   mapTypeControl: false,
   streetViewControl: false,
   fullscreenControl: false,
   clickableIcons: false,
-  styles: [
-    {
-      featureType: 'poi',
-      elementType: 'labels',
-      stylers: [{ visibility: 'off' }],
-    },
-  ],
+  gestureHandling: 'greedy',
+  styles: mapStyles,
 };
 
 const MapView = ({ onMarkClick, onCreateClick }) => {
@@ -82,6 +126,17 @@ const MapView = ({ onMarkClick, onCreateClick }) => {
   const handleLoad = useCallback((map) => {
     mapRef.current = map;
   }, []);
+
+  // Recenter map on user location
+  const handleRecenter = useCallback(() => {
+    if (location && mapRef.current) {
+      mapRef.current.panTo({
+        lat: location.latitude,
+        lng: location.longitude,
+      });
+      setZoom(16);
+    }
+  }, [location]);
 
   const handleMarkerClick = useCallback(
     (mark) => {
@@ -183,11 +238,11 @@ const MapView = ({ onMarkClick, onCreateClick }) => {
           </>
         )}
 
-        {/* Mark markers */}
+        {/* Mark bubbles */}
         {marks.map((mark) => {
           const isNearby = nearbyMarks.some((m) => m.id === mark.id);
           return (
-            <LocationMarker
+            <MarkBubble
               key={mark.id}
               mark={mark}
               isNearby={isNearby}
@@ -202,6 +257,39 @@ const MapView = ({ onMarkClick, onCreateClick }) => {
         <div className="nearby-indicator">
           <span className="pulse"></span>
           {nearbyMarks.length} mark{nearbyMarks.length !== 1 ? 's' : ''} nearby
+        </div>
+      )}
+
+      {/* Map controls */}
+      <div className="map-controls">
+        <button
+          className="map-control-btn"
+          onClick={() => setZoom((z) => Math.min(z + 1, 20))}
+          title="Zoom in"
+        >
+          <span>+</span>
+        </button>
+        <button
+          className="map-control-btn"
+          onClick={() => setZoom((z) => Math.max(z - 1, 10))}
+          title="Zoom out"
+        >
+          <span>−</span>
+        </button>
+        <button
+          className="map-control-btn recenter-btn"
+          onClick={handleRecenter}
+          title="Center on my location"
+        >
+          <span className="recenter-icon">◎</span>
+        </button>
+      </div>
+
+      {/* Distance hint for distant marks */}
+      {marks.length > 0 && nearbyMarks.length === 0 && (
+        <div className="distance-hint">
+          <span>📍</span>
+          Get closer to view marks
         </div>
       )}
     </div>
