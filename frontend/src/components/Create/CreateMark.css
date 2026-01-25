@@ -211,13 +211,14 @@
 @media (max-width: 768px) {
   .create-mark-overlay {
     padding: 0;
+    padding-bottom: 70px; /* Account for bottom nav bar */
     align-items: flex-end;
   }
 
   .create-mark-card {
     max-width: 100%;
     border-radius: 20px 20px 0 0;
-    max-height: 90vh;
+    max-height: calc(100vh - 70px); /* Account for bottom nav bar */
     animation: slideUpMobile 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
@@ -263,8 +264,12 @@
 /* Safe area for bottom sheet */
 @supports (padding: max(0px)) {
   @media (max-width: 768px) {
-    .create-info {
-      padding-bottom: max(1rem, env(safe-area-inset-bottom) + 0.5rem);
+    .create-mark-overlay {
+      padding-bottom: calc(70px + env(safe-area-inset-bottom));
+    }
+    
+    .create-mark-card {
+      max-height: calc(100vh - 70px - env(safe-area-inset-bottom));
     }
   }
 }
