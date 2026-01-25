@@ -30,12 +30,12 @@ const SnapshotPage = () => {
               </svg>
             </button>
             
-            {selectedMark.content?.startsWith('http') && selectedMark.content?.includes('picsum') ? (
+            {selectedMark.id?.startsWith('img-') || selectedMark.content?.includes('unsplash') || selectedMark.content?.includes('picsum') ? (
               // Image mark
               <div className="detail-image-container">
                 <img src={selectedMark.content} alt="Mark" />
               </div>
-            ) : selectedMark.content?.startsWith('http') ? (
+            ) : selectedMark.id?.startsWith('audio-') || selectedMark.content?.includes('soundhelix') || selectedMark.title ? (
               // Audio mark
               <div className="detail-audio-container">
                 <div className="detail-audio-icon">🎵</div>

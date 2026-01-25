@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import {
   getMarksAtLocation,
   recordMarkView,
@@ -22,6 +22,66 @@ const MarkDisplay = ({ location, mark: initialMark, onClose, onAddTo, onViewThre
   const [isEditingCanvas, setIsEditingCanvas] = useState(false);
   const [canvasData, setCanvasData] = useState(null);
   const [savingCanvas, setSavingCanvas] = useState(false);
+
+  // Drag to dismiss state
+  const [dragY, setDragY] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const dragStartY = useRef(0);
+  const cardRef = useRef(null);
+
+  // Handle drag to dismiss
+  const handleDragStart = (e) => {
+    // Only allow drag from the drag handle area
+    if (e.target.closest('.mark-body') || e.target.closest('.mark-actions') || e.target.closest('.thread-list')) {
+      return;
+    }
+    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    dragStartY.current = clientY;
+    setIsDragging(true);
+  };
+
+  const handleDragMove = (e) => {
+    if (!isDragging) return;
+    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    const diff = clientY - dragStartY.current;
+    // Only allow dragging down
+    if (diff > 0) {
+      setDragY(diff);
+    }
+  };
+
+  const handleDragEnd = () => {
+    if (!isDragging) return;
+    setIsDragging(false);
+    
+    // If dragged more than 120px, close the modal
+    if (dragY > 120) {
+      onClose();
+    } else {
+      // Snap back
+      setDragY(0);
+    }
+  };
+
+  // Add touch event listeners
+  useEffect(() => {
+    const card = cardRef.current;
+    if (!card) return;
+
+    const handleTouchMove = (e) => {
+      if (isDragging && dragY > 0) {
+        // Prevent scroll while dragging
+        e.preventDefault();
+      }
+      handleDragMove(e);
+    };
+
+    card.addEventListener('touchmove', handleTouchMove, { passive: false });
+    
+    return () => {
+      card.removeEventListener('touchmove', handleTouchMove);
+    };
+  }, [isDragging, dragY]);
 
   useEffect(() => {
     if (initialMark) {
@@ -269,9 +329,35 @@ const MarkDisplay = ({ location, mark: initialMark, onClose, onAddTo, onViewThre
     return `${diffHours}h ago`;
   };
 
+  // Calculate opacity based on drag distance
+  const overlayOpacity = isDragging ? Math.max(0.3, 1 - dragY / 300) : 1;
+
   return (
-    <div className="mark-display-overlay" onClick={onClose}>
-      <div className="mark-display-card" onClick={(e) => e.stopPropagation()}>
+    <div 
+      className="mark-display-overlay" 
+      onClick={onClose}
+      style={{ opacity: overlayOpacity }}
+    >
+      <div 
+        ref={cardRef}
+        className={`mark-display-card ${isDragging ? 'dragging' : ''}`}
+        onClick={(e) => e.stopPropagation()}
+        onTouchStart={handleDragStart}
+        onTouchEnd={handleDragEnd}
+        onMouseDown={handleDragStart}
+        onMouseMove={handleDragMove}
+        onMouseUp={handleDragEnd}
+        onMouseLeave={handleDragEnd}
+        style={{ 
+          transform: `translateY(${dragY}px)`,
+          transition: isDragging ? 'none' : 'transform 0.3s ease-out'
+        }}
+      >
+        {/* Drag handle indicator */}
+        <div className="drag-handle-area">
+          <div className="drag-handle"></div>
+        </div>
+
         <div className="mark-header">
           <div className="mark-meta">
             <span className={`mark-type-badge ${currentMark.type}`}>
