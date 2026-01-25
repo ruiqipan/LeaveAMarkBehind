@@ -127,6 +127,10 @@
 
 /* Mobile adjustments */
 @media (max-width: 768px) {
+  .canvas-editor {
+    gap: 0.5rem;
+  }
+
   .canvas-toolbar {
     justify-content: center;
   }
@@ -147,8 +151,14 @@
     height: 32px;
   }
 
+  .canvas-container {
+    max-height: 250px;
+    overflow: hidden;
+  }
+
   .canvas-container canvas {
     width: 100% !important;
     height: auto !important;
+    max-height: 250px;
   }
 }
