@@ -297,19 +297,20 @@ const MapView = ({ onMarkClick, onCreateClick }) => {
         </button>
       </div>
 
-      {/* Debug: Show marks count */}
+      {/* Marks count indicator */}
       {marks.length > 0 && (
-        <div className="distance-hint" style={{ bottom: '160px' }}>
-          <span>📍</span>
-          {marks.length} marks found ({nearbyMarks.length} nearby)
+        <div className="marks-count-hint">
+          <span className="hint-icon">📍</span>
+          <span className="hint-text">{marks.length} marks found ({nearbyMarks.length} nearby)</span>
         </div>
       )}
 
       {/* Distance hint for distant marks */}
       {marks.length > 0 && nearbyMarks.length === 0 && (
         <div className="distance-hint">
-          <span>📍</span>
-          Get closer to view marks
+          <span className="distance-hint-icon">🚶</span>
+          <span className="distance-hint-title">Get closer to view</span>
+          <span className="distance-hint-subtitle">Go towards the marks on the map</span>
         </div>
       )}
     </div>

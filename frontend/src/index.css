@@ -171,12 +171,38 @@ select {
 /* Mobile-specific optimizations */
 @media (max-width: 768px) {
   html {
-    font-size: 14px;
+    font-size: 15px;
   }
 
   /* Improve touch scrolling */
   * {
     -webkit-overflow-scrolling: touch;
+  }
+
+  /* Ensure readable text on mobile */
+  body {
+    font-size: 0.9375rem; /* 15px base */
+    line-height: 1.5;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  h2 {
+    font-size: 1.25rem;
+  }
+
+  h3 {
+    font-size: 1.125rem;
+  }
+
+  p, span, label {
+    font-size: 0.9375rem;
+  }
+
+  small {
+    font-size: 0.8125rem;
   }
 }
 

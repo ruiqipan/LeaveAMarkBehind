@@ -195,6 +195,65 @@
   margin-top: 8px;
 }
 
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  .audio-item {
+    padding: 12px 14px;
+    gap: 10px;
+  }
+
+  .audio-rank {
+    width: 26px;
+    height: 26px;
+    font-size: 0.75rem;
+  }
+
+  .audio-content {
+    gap: 6px;
+  }
+
+  .audio-title {
+    font-size: 0.875rem;
+  }
+
+  .audio-duration {
+    font-size: 0.6875rem;
+  }
+
+  .play-button {
+    width: 34px;
+    height: 34px;
+  }
+
+  .play-button svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .waveform-container {
+    height: 28px;
+  }
+
+  .audio-time {
+    font-size: 0.6875rem;
+  }
+
+  .stat {
+    font-size: 0.6875rem;
+    gap: 3px;
+  }
+
+  .stat-icon {
+    width: 12px;
+    height: 12px;
+  }
+
+  .chevron-icon {
+    width: 18px;
+    height: 18px;
+  }
+}
+
 /* Mobile touch states */
 @media (hover: none) {
   .audio-item:hover {

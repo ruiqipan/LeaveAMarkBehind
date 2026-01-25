@@ -105,6 +105,45 @@
   color: #c7c7cc;
 }
 
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  .text-item {
+    padding: 12px 14px;
+    gap: 10px;
+  }
+
+  .text-rank {
+    width: 26px;
+    height: 26px;
+    font-size: 0.75rem;
+  }
+
+  .text-body {
+    font-size: 0.875rem;
+    line-height: 1.45;
+    margin-bottom: 4px;
+  }
+
+  .text-time {
+    font-size: 0.6875rem;
+  }
+
+  .stat {
+    font-size: 0.6875rem;
+    gap: 3px;
+  }
+
+  .stat-icon {
+    width: 12px;
+    height: 12px;
+  }
+
+  .chevron-icon {
+    width: 18px;
+    height: 18px;
+  }
+}
+
 /* Mobile touch states */
 @media (hover: none) {
   .text-item:hover {

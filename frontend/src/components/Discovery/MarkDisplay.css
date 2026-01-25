@@ -287,14 +287,14 @@
 @media (max-width: 768px) {
   .mark-display-overlay {
     padding: 0;
-    padding-bottom: 70px; /* Account for bottom nav bar */
+    padding-bottom: 64px; /* Account for mobile bottom nav bar */
     align-items: flex-end;
   }
 
   .mark-display-card {
     max-width: 100%;
-    border-radius: 20px 20px 0 0;
-    max-height: calc(100vh - 70px); /* Account for bottom nav bar */
+    border-radius: 24px 24px 0 0;
+    max-height: calc(100vh - 64px); /* Account for mobile bottom nav bar */
     animation: slideUpMobile 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
@@ -302,18 +302,54 @@
     content: '';
     display: block;
     width: 40px;
-    height: 4px;
-    background: #d1d5db;
-    border-radius: 2px;
-    margin: 12px auto 8px;
+    height: 5px;
+    background: #e5e7eb;
+    border-radius: 3px;
+    margin: 10px auto 6px;
   }
 
   .mark-header {
-    padding-top: 0.5rem;
+    padding: 0.5rem 1rem;
+  }
+
+  .mark-body {
+    padding: 1.25rem 1rem;
   }
 
   .mark-content-text p {
-    font-size: 1rem;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+  }
+
+  .mark-type-badge {
+    font-size: 0.6875rem;
+    padding: 0.2rem 0.625rem;
+  }
+
+  .mark-time {
+    font-size: 0.8125rem;
+  }
+
+  .mark-stats {
+    padding: 0 1rem 0.875rem;
+  }
+
+  .stat {
+    font-size: 0.8125rem;
+  }
+
+  .btn-thread {
+    font-size: 0.8125rem;
+    padding: 0.625rem;
+  }
+
+  .thread-item .mark-content-text p {
+    font-size: 0.875rem;
+  }
+
+  .btn-close-icon {
+    width: 36px;
+    height: 36px;
   }
 }
 
@@ -332,11 +368,11 @@
 @supports (padding: max(0px)) {
   @media (max-width: 768px) {
     .mark-display-overlay {
-      padding-bottom: calc(70px + env(safe-area-inset-bottom));
+      padding-bottom: calc(64px + env(safe-area-inset-bottom));
     }
     
     .mark-display-card {
-      max-height: calc(100vh - 70px - env(safe-area-inset-bottom));
+      max-height: calc(100vh - 64px - env(safe-area-inset-bottom));
     }
   }
 }

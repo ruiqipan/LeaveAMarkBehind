@@ -289,12 +289,12 @@
 
 .onboarding-dots {
   display: flex;
-  gap: 10px;
+  gap: 8px;
 }
 
 .onboarding-dot {
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.3);
   border: none;
@@ -306,7 +306,8 @@
 
 .onboarding-dot.active {
   background: white;
-  transform: scale(1.2);
+  width: 20px;
+  border-radius: 4px;
 }
 
 .onboarding-dot:hover:not(.active) {
@@ -318,9 +319,9 @@
   background: white;
   color: #667eea;
   border: none;
-  padding: 1rem 2.5rem;
+  padding: 0.875rem 2rem;
   border-radius: 50px;
-  font-size: 1rem;
+  font-size: 0.9375rem;
   font-weight: 600;
   cursor: pointer;
   display: flex;
@@ -350,8 +351,8 @@
 
 /* Hint */
 .onboarding-hint {
-  margin-top: 1.5rem;
-  font-size: 0.8125rem;
+  margin-top: 1rem;
+  font-size: 0.75rem;
   color: rgba(255, 255, 255, 0.7);
   text-align: center;
   animation: fadeIn 0.5s ease-out 0.3s both;
