@@ -47,6 +47,9 @@
   padding-top: 24px;
   max-width: 540px;
   margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .header-content {
@@ -54,6 +57,185 @@
   align-items: center;
   gap: 12px;
   color: white;
+}
+
+/* Info Button */
+.info-button {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.info-button:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.05);
+}
+
+.info-button:active {
+  transform: scale(0.95);
+}
+
+.info-button svg {
+  width: 20px;
+  height: 20px;
+  color: white;
+}
+
+/* Info Bubble Overlay */
+.info-bubble-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3000;
+  padding: 20px;
+  animation: fadeIn 0.2s ease-out;
+}
+
+/* Info Bubble */
+.info-bubble {
+  background: white;
+  border-radius: 20px;
+  max-width: 400px;
+  width: 100%;
+  max-height: 80vh;
+  overflow-y: auto;
+  position: relative;
+  animation: scaleIn 0.25s ease-out;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.info-bubble-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.08);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 10;
+  transition: background 0.2s;
+}
+
+.info-bubble-close:hover {
+  background: rgba(0, 0, 0, 0.12);
+}
+
+.info-bubble-close:active {
+  background: rgba(0, 0, 0, 0.16);
+}
+
+.info-bubble-close svg {
+  width: 18px;
+  height: 18px;
+  color: #666;
+}
+
+.info-bubble-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 24px 24px 16px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.info-bubble-icon {
+  font-size: 32px;
+}
+
+.info-bubble-header h3 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: #1c1c1e;
+  letter-spacing: -0.3px;
+}
+
+.info-bubble-content {
+  padding: 20px 24px;
+}
+
+.info-section {
+  margin-bottom: 20px;
+}
+
+.info-section:last-child {
+  margin-bottom: 0;
+}
+
+.info-section h4 {
+  margin: 0 0 8px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #667eea;
+}
+
+.info-section p {
+  margin: 0 0 8px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #555;
+}
+
+.info-section p:last-child {
+  margin-bottom: 0;
+}
+
+.info-section strong {
+  color: #1c1c1e;
+}
+
+.info-bubble-dismiss {
+  display: block;
+  width: calc(100% - 48px);
+  margin: 0 24px 24px;
+  padding: 14px 24px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.info-bubble-dismiss:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.info-bubble-dismiss:active {
+  transform: translateY(0);
 }
 
 .header-icon {
@@ -377,6 +559,58 @@
 
   .header-date {
     font-size: 0.75rem;
+  }
+
+  .info-button {
+    width: 32px;
+    height: 32px;
+  }
+
+  .info-button svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .info-bubble-overlay {
+    padding: 16px;
+    align-items: flex-end;
+  }
+
+  .info-bubble {
+    max-height: 85vh;
+    border-radius: 20px 20px 0 0;
+    animation: slideUp 0.3s ease-out;
+  }
+
+  .info-bubble-header {
+    padding: 20px 20px 14px;
+  }
+
+  .info-bubble-icon {
+    font-size: 28px;
+  }
+
+  .info-bubble-header h3 {
+    font-size: 18px;
+  }
+
+  .info-bubble-content {
+    padding: 16px 20px;
+  }
+
+  .info-section h4 {
+    font-size: 14px;
+  }
+
+  .info-section p {
+    font-size: 13px;
+  }
+
+  .info-bubble-dismiss {
+    width: calc(100% - 40px);
+    margin: 0 20px 20px;
+    padding: 12px 20px;
+    font-size: 15px;
   }
 
   .snapshot-location-bar {

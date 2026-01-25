@@ -70,10 +70,8 @@
 html {
   font-size: 16px;
   -webkit-tap-highlight-color: transparent;
-}
-
-html {
   height: 100%;
+  overflow: hidden;
 }
 
 body {
@@ -82,19 +80,23 @@ body {
   font-family: var(--font-family);
   line-height: 1.5;
   color: var(--color-gray-900);
-  background-color: #ffffff;
+  background-color: #f3f4f6;
   overflow: hidden;
   height: 100%;
-  min-height: 100%;
-  /* Use dvh for better mobile support, fallback to vh */
-  min-height: 100vh;
-  min-height: 100dvh;
+  /* Fixed positioning to fill exact viewport */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 
 #root {
-  width: 100%;
-  height: 100%;
-  min-height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   overflow: hidden;
 }
 
@@ -248,33 +250,8 @@ a:active,
   opacity: 0.85;
 }
 
-/* Safe area insets for devices with notches */
-/* Note: bottom padding is NOT applied here because fixed elements 
-   (BottomNav, modals) handle their own safe-area-inset-bottom */
-@supports (padding: max(0px)) {
-  body {
-    padding-top: env(safe-area-inset-top);
-    padding-left: env(safe-area-inset-left);
-    padding-right: env(safe-area-inset-right);
-  }
-}
-
-/* PWA Standalone mode - ensure full screen coverage */
-@media (display-mode: standalone) {
-  html, body, #root {
-    height: 100%;
-    min-height: 100%;
-    /* Ensure no extra space at edges in standalone mode */
-    overflow: hidden;
-  }
-  
-  body {
-    /* In standalone mode, only top safe area is needed on body
-       Bottom is handled by fixed elements like BottomNav */
-    padding-left: 0;
-    padding-right: 0;
-  }
-}
+/* Safe area insets are now handled by .app in App.css
+   Bottom safe area is handled by fixed elements like BottomNav */
 
 /* Loading state */
 .loading {

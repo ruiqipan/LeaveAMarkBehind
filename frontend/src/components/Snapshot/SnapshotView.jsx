@@ -46,10 +46,10 @@ const sampleTextMarks = [
 const sampleAudioMarks = [
   {
     id: 'audio-1',
-    content: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
+    content: 'https://orangefreesounds.com/wp-content/uploads/2024/07/City-traffic-sounds.mp3',
     title: 'Rush Hour Traffic on Broad St',
     location: 'Center City',
-    duration: '0:45',
+    duration: '0:42',
     category: 'city',
     created_at: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString(),
     view_count: 198,
@@ -57,10 +57,10 @@ const sampleAudioMarks = [
   },
   {
     id: 'audio-2',
-    content: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3',
-    title: 'Jazz Saxophone at Rittenhouse',
+    content: 'https://www.orangefreesounds.com/wp-content/uploads/2015/01/Soft-piano-music.mp3',
+    title: 'Soft Piano at Rittenhouse',
     location: 'Rittenhouse',
-    duration: '2:34',
+    duration: '0:49',
     category: 'music',
     created_at: new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString(),
     view_count: 156,
@@ -68,10 +68,10 @@ const sampleAudioMarks = [
   },
   {
     id: 'audio-3',
-    content: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3',
+    content: 'https://www.orangefreesounds.com/wp-content/uploads/2014/06/Crowd-talking-sound-effects.mp3',
     title: 'Reading Terminal Market Chatter',
     location: 'Market East',
-    duration: '1:12',
+    duration: '0:20',
     category: 'city',
     created_at: new Date(Date.now() - 9 * 60 * 60 * 1000).toISOString(),
     view_count: 134,
@@ -79,10 +79,10 @@ const sampleAudioMarks = [
   },
   {
     id: 'audio-4',
-    content: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3',
+    content: 'https://orangefreesounds.com/wp-content/uploads/2025/07/Subway-train-arrival-sound-effect.mp3',
     title: 'SEPTA Subway Arriving',
     location: 'City Hall Station',
-    duration: '0:28',
+    duration: '0:12',
     category: 'city',
     created_at: new Date(Date.now() - 14 * 60 * 60 * 1000).toISOString(),
     view_count: 112,
@@ -90,10 +90,10 @@ const sampleAudioMarks = [
   },
   {
     id: 'audio-5',
-    content: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3',
+    content: 'https://www.orangefreesounds.com/wp-content/uploads/2016/03/Guitar-background-music.mp3',
     title: 'South Street Busker Guitar',
     location: 'South Street',
-    duration: '3:15',
+    duration: '2:05',
     category: 'music',
     created_at: new Date(Date.now() - 20 * 60 * 60 * 1000).toISOString(),
     view_count: 98,
@@ -119,6 +119,7 @@ const sampleImageMarks = [
 
 const SnapshotView = ({ onMarkClick, embedded = false }) => {
   const today = new Date();
+  const [showInfoBubble, setShowInfoBubble] = useState(false);
   
   // Calculate time remaining until snapshot expires (36 hours after midnight generation)
   const calculateTimeRemaining = () => {
@@ -186,7 +187,78 @@ const SnapshotView = ({ onMarkClick, embedded = false }) => {
             <p className="header-date">{formatDate(today)}</p>
           </div>
         </div>
+        <button 
+          className="info-button"
+          onClick={() => setShowInfoBubble(true)}
+          aria-label="More information"
+        >
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+          </svg>
+        </button>
       </div>
+
+      {/* Info Bubble Modal */}
+      {showInfoBubble && (
+        <div className="info-bubble-overlay" onClick={() => setShowInfoBubble(false)}>
+          <div className="info-bubble" onClick={(e) => e.stopPropagation()}>
+            <button 
+              className="info-bubble-close"
+              onClick={() => setShowInfoBubble(false)}
+              aria-label="Close"
+            >
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+              </svg>
+            </button>
+            
+            <div className="info-bubble-header">
+              <span className="info-bubble-icon">📸</span>
+              <h3>About Daily Snapshot</h3>
+            </div>
+            
+            <div className="info-bubble-content">
+              <div className="info-section">
+                <h4>What is the Daily Snapshot?</h4>
+                <p>
+                  The Daily Snapshot is a curated collection of the most popular marks 
+                  from your area. Every day at midnight, we compile the top text, audio, 
+                  and image marks based on views and reactions.
+                </p>
+              </div>
+              
+              <div className="info-section">
+                <h4>The 36-Hour Rule</h4>
+                <p>
+                  Each snapshot is available for <strong>36 hours</strong> after it's generated 
+                  at midnight. This gives everyone time to catch up on what happened yesterday, 
+                  even if they check in the next morning or afternoon.
+                </p>
+                <p>
+                  After 36 hours, the snapshot expires and a new one takes its place, 
+                  keeping content fresh and relevant to what's happening now.
+                </p>
+              </div>
+              
+              <div className="info-section">
+                <h4>Anti-Viral by Design</h4>
+                <p>
+                  Leave a Mark uses an anti-viral algorithm to promote diverse voices 
+                  rather than letting a few posts dominate. This ensures everyone's 
+                  mark has a fair chance to be seen.
+                </p>
+              </div>
+            </div>
+            
+            <button 
+              className="info-bubble-dismiss"
+              onClick={() => setShowInfoBubble(false)}
+            >
+              Got it!
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Location pill */}
       <div className="snapshot-location-bar">
