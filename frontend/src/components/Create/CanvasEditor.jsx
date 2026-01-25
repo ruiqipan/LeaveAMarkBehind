@@ -242,43 +242,73 @@ const CanvasEditor = ({ initialData, onChange, readOnly = false }) => {
         {/* Tools */}
         <div className="tool-group">
           <button
+            type="button"
             className={`tool-btn ${tool === 'draw' ? 'active' : ''}`}
-            onClick={() => setTool('draw')}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setTool('draw');
+            }}
             title="Draw"
           >
             ✏️
           </button>
           <button
+            type="button"
             className={`tool-btn ${tool === 'select' ? 'active' : ''}`}
-            onClick={() => setTool('select')}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setTool('select');
+            }}
             title="Select"
           >
             👆
           </button>
           <button
+            type="button"
             className="tool-btn"
-            onClick={() => addShape('circle')}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              addShape('circle');
+            }}
             title="Circle"
           >
             ⭕
           </button>
           <button
+            type="button"
             className="tool-btn"
-            onClick={() => addShape('rect')}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              addShape('rect');
+            }}
             title="Rectangle"
           >
             ⬜
           </button>
           <button
+            type="button"
             className="tool-btn"
-            onClick={() => addShape('text')}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              addShape('text');
+            }}
             title="Text"
           >
             T
           </button>
           <button
+            type="button"
             className="tool-btn"
-            onClick={triggerImageUpload}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              triggerImageUpload();
+            }}
             title="Add Image"
           >
             🖼️
@@ -287,10 +317,28 @@ const CanvasEditor = ({ initialData, onChange, readOnly = false }) => {
 
         {/* Actions */}
         <div className="tool-group">
-          <button className="tool-btn" onClick={undo} title="Undo">
+          <button
+            type="button"
+            className="tool-btn"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              undo();
+            }}
+            title="Undo"
+          >
             ↩️
           </button>
-          <button className="tool-btn danger" onClick={clearCanvas} title="Clear">
+          <button
+            type="button"
+            className="tool-btn danger"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              clearCanvas();
+            }}
+            title="Clear"
+          >
             🗑️
           </button>
         </div>
@@ -300,13 +348,18 @@ const CanvasEditor = ({ initialData, onChange, readOnly = false }) => {
       <div className="color-picker">
         {COLORS.map((color) => (
           <button
+            type="button"
             key={color}
             className={`color-btn ${activeColor === color ? 'active' : ''}`}
             style={{
               backgroundColor: color,
               border: color === '#ffffff' ? '2px solid #e5e7eb' : 'none'
             }}
-            onClick={() => setActiveColor(color)}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setActiveColor(color);
+            }}
           />
         ))}
       </div>
@@ -315,9 +368,14 @@ const CanvasEditor = ({ initialData, onChange, readOnly = false }) => {
       <div className="brush-sizes">
         {BRUSH_SIZES.map((size) => (
           <button
+            type="button"
             key={size}
             className={`size-btn ${brushSize === size ? 'active' : ''}`}
-            onClick={() => setBrushSize(size)}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setBrushSize(size);
+            }}
           >
             <span
               className="size-dot"
