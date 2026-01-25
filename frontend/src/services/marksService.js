@@ -3,6 +3,7 @@ import { getSessionId } from '../utils/sessionId';
 
 /**
  * Fetch active marks within a geographic bounding box
+ * Only fetches parent marks (not replies) - replies are shown in threads
  * @param {number} north - North latitude bound
  * @param {number} south - South latitude bound
  * @param {number} east - East longitude bound
@@ -19,6 +20,7 @@ export const getMarksInBounds = async (north, south, east, west) => {
     .from('marks')
     .select('*')
     .eq('is_active', true)
+    .is('parent_id', null)  // Only fetch parent marks, not replies
     .gte('latitude', south)
     .lte('latitude', north)
     .gte('longitude', west)
@@ -35,6 +37,7 @@ export const getMarksInBounds = async (north, south, east, west) => {
 
 /**
  * Fetch active marks at a specific location (within small radius)
+ * Only fetches parent marks (not replies) - replies are shown in threads
  * @param {number} lat - Latitude
  * @param {number} lng - Longitude
  * @param {number} radiusMeters - Search radius in meters (default 100m)
@@ -54,6 +57,7 @@ export const getMarksAtLocation = async (lat, lng, radiusMeters = 100) => {
     .from('marks')
     .select('*')
     .eq('is_active', true)
+    .is('parent_id', null)  // Only fetch parent marks, not replies
     .gte('latitude', lat - latDelta)
     .lte('latitude', lat + latDelta)
     .gte('longitude', lng - lngDelta)
@@ -155,10 +159,22 @@ export const incrementViewCount = async (markId) => {
   });
 
   if (error) {
-    // Fallback to update if RPC doesn't exist
+    console.warn('RPC increment_view_count failed, using fallback:', error.message);
+    // Fallback: fetch current value and increment
+    const { data: currentMark, error: fetchError } = await supabase
+      .from('marks')
+      .select('view_count')
+      .eq('id', markId)
+      .single();
+
+    if (fetchError) {
+      console.error('Error fetching mark for view count:', fetchError);
+      return;
+    }
+
     const { error: updateError } = await supabase
       .from('marks')
-      .update({ view_count: supabase.raw('view_count + 1') })
+      .update({ view_count: (currentMark?.view_count || 0) + 1 })
       .eq('id', markId);
 
     if (updateError) {
@@ -178,10 +194,22 @@ export const incrementAddCount = async (markId) => {
   });
 
   if (error) {
-    // Fallback to update if RPC doesn't exist
+    console.warn('RPC increment_add_count failed, using fallback:', error.message);
+    // Fallback: fetch current value and increment
+    const { data: currentMark, error: fetchError } = await supabase
+      .from('marks')
+      .select('add_count')
+      .eq('id', markId)
+      .single();
+
+    if (fetchError) {
+      console.error('Error fetching mark for add count:', fetchError);
+      return;
+    }
+
     const { error: updateError } = await supabase
       .from('marks')
-      .update({ add_count: supabase.raw('add_count + 1') })
+      .update({ add_count: (currentMark?.add_count || 0) + 1 })
       .eq('id', markId);
 
     if (updateError) {
