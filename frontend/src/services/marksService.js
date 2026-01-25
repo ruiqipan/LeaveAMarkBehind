@@ -71,25 +71,31 @@ export const getMarksAtLocation = async (lat, lng, radiusMeters = 100) => {
 /**
  * Create a new mark
  * @param {object} markData - Mark data
- * @param {string} markData.type - 'text', 'image', or 'audio'
+ * @param {string} markData.type - 'text', 'image', 'audio', or 'canvas'
  * @param {string} markData.content - Content or URL
  * @param {number} markData.latitude - Latitude
  * @param {number} markData.longitude - Longitude
  * @param {string} markData.parent_id - Optional parent mark ID for threading
+ * @param {string} markData.image_url - Optional image URL (for canvas thumbnails)
  * @returns {Promise<object>} Created mark
  */
-export const createMark = async ({ type, content, latitude, longitude, parent_id = null }) => {
+export const createMark = async ({ type, content, latitude, longitude, parent_id = null, image_url = null }) => {
+  const insertData = {
+    type,
+    content,
+    latitude,
+    longitude,
+    parent_id,
+  };
+
+  // Add image_url if provided (used for canvas thumbnails)
+  if (image_url) {
+    insertData.image_url = image_url;
+  }
+
   const { data, error } = await supabase
     .from('marks')
-    .insert([
-      {
-        type,
-        content,
-        latitude,
-        longitude,
-        parent_id,
-      },
-    ])
+    .insert([insertData])
     .select()
     .single();
 
@@ -260,6 +266,37 @@ export const uploadAudio = async (file) => {
 };
 
 /**
+ * Upload canvas PNG thumbnail to Supabase Storage
+ * @param {string} dataUrl - Base64 data URL of the canvas PNG
+ * @returns {Promise<string>} Public URL of uploaded image
+ */
+export const uploadCanvasImage = async (dataUrl) => {
+  // Convert data URL to Blob
+  const response = await fetch(dataUrl);
+  const blob = await response.blob();
+
+  const fileName = `canvas-${Date.now()}-${Math.random().toString(36).substring(2)}.png`;
+  const filePath = `${fileName}`;
+
+  const { error: uploadError } = await supabase.storage
+    .from('mark-images')
+    .upload(filePath, blob, {
+      cacheControl: '3600',
+      upsert: false,
+      contentType: 'image/png',
+    });
+
+  if (uploadError) {
+    console.error('Error uploading canvas image:', uploadError);
+    throw uploadError;
+  }
+
+  const { data } = supabase.storage.from('mark-images').getPublicUrl(filePath);
+
+  return data.publicUrl;
+};
+
+/**
  * Get snapshot for a location
  * @param {string} locationClusterId - Location cluster ID
  * @returns {Promise<object|null>} Snapshot data or null
@@ -301,4 +338,34 @@ export const getMarksByIds = async (markIds) => {
   }
 
   return data || [];
+};
+
+/**
+ * Update canvas content for a mark
+ * @param {string} markId - Mark ID
+ * @param {string} canvasData - Serialized canvas JSON
+ * @param {string} imageUrl - Optional new image URL for thumbnail
+ * @returns {Promise<object>} Updated mark
+ */
+export const updateCanvasContent = async (markId, canvasData, imageUrl = null) => {
+  const updateData = { content: canvasData };
+
+  if (imageUrl) {
+    updateData.image_url = imageUrl;
+  }
+
+  const { data, error } = await supabase
+    .from('marks')
+    .update(updateData)
+    .eq('id', markId)
+    .eq('type', 'canvas')
+    .select()
+    .single();
+
+  if (error) {
+    console.error('Error updating canvas:', error);
+    throw error;
+  }
+
+  return data;
 };

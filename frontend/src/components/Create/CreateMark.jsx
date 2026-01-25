@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { createMark, uploadImage, uploadAudio } from '../../services/marksService';
+import { createMark, uploadImage, uploadAudio, uploadCanvasImage } from '../../services/marksService';
 import MediaUpload from './MediaUpload';
+import CanvasEditor from './CanvasEditor';
 import './CreateMark.css';
 
 const CreateMark = ({ location, parentMark = null, onClose, onSuccess }) => {
@@ -8,6 +9,7 @@ const CreateMark = ({ location, parentMark = null, onClose, onSuccess }) => {
   const [textContent, setTextContent] = useState('');
   const [mediaFile, setMediaFile] = useState(null);
   const [audioBlob, setAudioBlob] = useState(null);
+  const [canvasData, setCanvasData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -26,6 +28,7 @@ const CreateMark = ({ location, parentMark = null, onClose, onSuccess }) => {
 
     try {
       let content = '';
+      let imageUrl = null;
 
       switch (markType) {
         case 'text':
@@ -58,6 +61,20 @@ const CreateMark = ({ location, parentMark = null, onClose, onSuccess }) => {
           content = await uploadAudio(audioFile);
           break;
 
+        case 'canvas':
+          if (!canvasData || !canvasData.json) {
+            setError('Please draw something on the canvas');
+            setLoading(false);
+            return;
+          }
+          // Store JSON for editing capability
+          content = canvasData.json;
+          // Upload PNG thumbnail to storage
+          if (canvasData.png) {
+            imageUrl = await uploadCanvasImage(canvasData.png);
+          }
+          break;
+
         default:
           setError('Invalid mark type');
           setLoading(false);
@@ -71,6 +88,7 @@ const CreateMark = ({ location, parentMark = null, onClose, onSuccess }) => {
         latitude: location.latitude,
         longitude: location.longitude,
         parent_id: parentMark?.id || null,
+        image_url: imageUrl,
       });
 
       setLoading(false);
@@ -99,9 +117,15 @@ const CreateMark = ({ location, parentMark = null, onClose, onSuccess }) => {
         return mediaFile !== null;
       case 'audio':
         return audioBlob !== null || mediaFile !== null;
+      case 'canvas':
+        return canvasData !== null && canvasData.json !== null;
       default:
         return false;
     }
+  };
+
+  const handleCanvasChange = (data) => {
+    setCanvasData(data);
   };
 
   return (
@@ -150,6 +174,14 @@ const CreateMark = ({ location, parentMark = null, onClose, onSuccess }) => {
               <span className="type-icon">🎵</span>
               Audio
             </button>
+            <button
+              type="button"
+              className={`type-btn ${markType === 'canvas' ? 'active' : ''}`}
+              onClick={() => setMarkType('canvas')}
+            >
+              <span className="type-icon">🎨</span>
+              Canvas
+            </button>
           </div>
 
           {/* Content input based on type */}
@@ -187,6 +219,10 @@ const CreateMark = ({ location, parentMark = null, onClose, onSuccess }) => {
                 accept="audio/mpeg,audio/wav,audio/ogg"
               />
             )}
+
+            {markType === 'canvas' && (
+              <CanvasEditor onChange={handleCanvasChange} />
+            )}
           </div>
 
           {/* Error message */}
@@ -202,7 +238,7 @@ const CreateMark = ({ location, parentMark = null, onClose, onSuccess }) => {
               {loading ? (
                 <>
                   <span className="spinner-small"></span>
-                  {markType === 'text' ? 'Creating...' : 'Uploading...'}
+                  {markType === 'text' || markType === 'canvas' ? 'Creating...' : 'Uploading...'}
                 </>
               ) : (
                 <>

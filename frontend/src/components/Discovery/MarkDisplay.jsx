@@ -3,10 +3,13 @@ import {
   getMarksAtLocation,
   recordMarkView,
   getMarkThread,
+  updateCanvasContent,
+  uploadCanvasImage,
 } from '../../services/marksService';
 import { selectMarkWithRecency } from '../../services/antiViralAlgorithm';
 import { formatDistance } from '../../utils/geofencing';
 import MarkActions from './MarkActions';
+import CanvasEditor from '../Create/CanvasEditor';
 import './MarkDisplay.css';
 
 const MarkDisplay = ({ location, mark: initialMark, onClose, onAddTo, onViewThread }) => {
@@ -16,6 +19,9 @@ const MarkDisplay = ({ location, mark: initialMark, onClose, onAddTo, onViewThre
   const [error, setError] = useState(null);
   const [thread, setThread] = useState([]);
   const [showThread, setShowThread] = useState(false);
+  const [isEditingCanvas, setIsEditingCanvas] = useState(false);
+  const [canvasData, setCanvasData] = useState(null);
+  const [savingCanvas, setSavingCanvas] = useState(false);
 
   useEffect(() => {
     if (initialMark) {
@@ -109,6 +115,43 @@ const MarkDisplay = ({ location, mark: initialMark, onClose, onAddTo, onViewThre
     onAddTo?.(currentMark);
   };
 
+  const handleEditCanvas = () => {
+    setCanvasData({ json: currentMark.content, png: null });
+    setIsEditingCanvas(true);
+  };
+
+  const handleCanvasChange = (data) => {
+    // data is now { json, png }
+    setCanvasData(data);
+  };
+
+  const handleSaveCanvas = async () => {
+    if (!canvasData || !canvasData.json) return;
+
+    setSavingCanvas(true);
+    try {
+      // Upload new PNG thumbnail if available
+      let newImageUrl = currentMark.image_url;
+      if (canvasData.png) {
+        newImageUrl = await uploadCanvasImage(canvasData.png);
+      }
+
+      const updated = await updateCanvasContent(currentMark.id, canvasData.json, newImageUrl);
+      setCurrentMark(updated);
+      setIsEditingCanvas(false);
+    } catch (err) {
+      console.error('Error saving canvas:', err);
+      alert('Failed to save canvas');
+    } finally {
+      setSavingCanvas(false);
+    }
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditingCanvas(false);
+    setCanvasData(null);
+  };
+
   const renderMarkContent = (mark) => {
     switch (mark.type) {
       case 'text':
@@ -131,6 +174,52 @@ const MarkDisplay = ({ location, mark: initialMark, onClose, onAddTo, onViewThre
             <audio controls src={mark.content}>
               Your browser does not support the audio element.
             </audio>
+          </div>
+        );
+
+      case 'canvas':
+        return (
+          <div className="mark-content-canvas">
+            {isEditingCanvas ? (
+              <div className="canvas-edit-container">
+                <CanvasEditor
+                  initialData={canvasData?.json || mark.content}
+                  onChange={handleCanvasChange}
+                />
+                <div className="canvas-edit-actions">
+                  <button
+                    onClick={handleCancelEdit}
+                    className="btn-cancel"
+                    disabled={savingCanvas}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={handleSaveCanvas}
+                    className="btn-save"
+                    disabled={savingCanvas}
+                  >
+                    {savingCanvas ? 'Saving...' : 'Save Changes'}
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className="canvas-view-container">
+                {/* Show PNG thumbnail if available for quick display */}
+                {mark.image_url ? (
+                  <img
+                    src={mark.image_url}
+                    alt="Canvas drawing"
+                    className="canvas-thumbnail"
+                  />
+                ) : (
+                  <CanvasEditor initialData={mark.content} readOnly />
+                )}
+                <button onClick={handleEditCanvas} className="btn-edit-canvas">
+                  Add to Canvas
+                </button>
+              </div>
+            )}
           </div>
         );
 
