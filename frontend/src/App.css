@@ -19,15 +19,11 @@ body {
   /* Prevent text selection on touch */
   -webkit-touch-callout: none;
   user-select: none;
-  /* Fix for mobile viewport height */
-  height: 100vh;
-  height: -webkit-fill-available;
 }
 
 .app {
   width: 100%;
-  height: 100vh;
-  height: -webkit-fill-available;
+  height: 100%;
   position: relative;
   overflow: hidden;
   touch-action: manipulation; /* Allow all touch interactions */
