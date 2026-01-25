@@ -6,7 +6,7 @@ import TopAudioList from './TopAudioList';
 import ImageGrid from './ImageGrid';
 import './SnapshotView.css';
 
-const SnapshotView = ({ location, onClose, onMarkClick }) => {
+const SnapshotView = ({ location, onClose, onMarkClick, embedded = false }) => {
   const [snapshot, setSnapshot] = useState(null);
   const [textMarks, setTextMarks] = useState([]);
   const [audioMarks, setAudioMarks] = useState([]);
@@ -93,33 +93,38 @@ const SnapshotView = ({ location, onClose, onMarkClick }) => {
     return `${minutes}m remaining`;
   };
 
+  const wrapContent = (content) => {
+    if (embedded) {
+      return content;
+    }
+    return <div className="snapshot-overlay" onClick={onClose}>{content}</div>;
+  };
+
   if (loading) {
-    return (
-      <div className="snapshot-overlay">
-        <div className="snapshot-container">
-          <div className="snapshot-loading">
-            <div className="spinner"></div>
-            <p>Loading snapshot...</p>
-          </div>
+    return wrapContent(
+      <div className="snapshot-container" onClick={(e) => !embedded && e.stopPropagation()}>
+        <div className="snapshot-loading">
+          <div className="spinner"></div>
+          <p>Loading snapshot...</p>
         </div>
       </div>
     );
   }
 
   if (error || !snapshot) {
-    return (
-      <div className="snapshot-overlay">
-        <div className="snapshot-container">
-          <div className="snapshot-error">
-            <h2>📸 No Snapshot Available</h2>
-            <p>{error || 'No snapshot found for this location'}</p>
-            <p className="error-hint">
-              Snapshots are created daily at midnight for locations with activity.
-            </p>
+    return wrapContent(
+      <div className="snapshot-container" onClick={(e) => !embedded && e.stopPropagation()}>
+        <div className="snapshot-error">
+          <h2>📸 No Snapshot Available</h2>
+          <p>{error || 'No snapshot found for this location'}</p>
+          <p className="error-hint">
+            Snapshots are created daily at midnight for locations with activity.
+          </p>
+          {!embedded && (
             <button onClick={onClose} className="btn-close">
               Close
             </button>
-          </div>
+          )}
         </div>
       </div>
     );
@@ -128,21 +133,22 @@ const SnapshotView = ({ location, onClose, onMarkClick }) => {
   const hasContent =
     textMarks.length > 0 || audioMarks.length > 0 || imageMarks.length > 0;
 
-  return (
-    <div className="snapshot-overlay" onClick={onClose}>
-      <div className="snapshot-container" onClick={(e) => e.stopPropagation()}>
-        <div className="snapshot-header">
-          <div className="snapshot-title">
-            <span className="snapshot-icon">📸</span>
-            <div>
-              <h2>Daily Snapshot</h2>
-              <p className="snapshot-date">{formatDate(snapshot.snapshot_date)}</p>
-            </div>
+  return wrapContent(
+    <div className={`snapshot-container ${embedded ? 'embedded' : ''}`} onClick={(e) => !embedded && e.stopPropagation()}>
+      <div className="snapshot-header">
+        <div className="snapshot-title">
+          <span className="snapshot-icon">📸</span>
+          <div>
+            <h2>Daily Snapshot</h2>
+            <p className="snapshot-date">{formatDate(snapshot.snapshot_date)}</p>
           </div>
+        </div>
+        {!embedded && (
           <button onClick={onClose} className="btn-close-icon">
             ✕
           </button>
-        </div>
+        )}
+      </div>
 
         <div className="snapshot-meta">
           <span className="expiry-badge">
@@ -198,7 +204,6 @@ const SnapshotView = ({ location, onClose, onMarkClick }) => {
           </p>
         </div>
       </div>
-    </div>
   );
 };
 

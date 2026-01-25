@@ -1,0 +1,40 @@
+.snapshot-page {
+  width: 100%;
+  height: 100vh;
+  height: -webkit-fill-available;
+  overflow-y: auto;
+  background: #f9fafb;
+}
+
+.snapshot-page-loading,
+.snapshot-page-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  padding: 2rem;
+  text-align: center;
+}
+
+.snapshot-page-loading {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.snapshot-page-error {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.snapshot-page-error h2 {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.snapshot-page-error p {
+  font-size: 1rem;
+  margin: 0.5rem 0;
+  opacity: 0.9;
+}

@@ -102,6 +102,13 @@ const MarkBubble = ({ mark, isNearby, onClick }) => {
     mark.type === 'image' && imageLoaded ? 'has-image' : '',
   ].filter(Boolean).join(' ');
 
+  const handleClick = (e) => {
+    e.stopPropagation();
+    if (onClick) {
+      onClick();
+    }
+  };
+
   return (
     <OverlayView
       position={position}
@@ -111,7 +118,7 @@ const MarkBubble = ({ mark, isNearby, onClick }) => {
         y: -height - 8, // Position above the point with stem
       })}
     >
-      <div className={bubbleClasses} onClick={onClick}>
+      <div className={bubbleClasses} onClick={handleClick}>
         <div className="bubble-content">
           {renderThumbnail()}
         </div>
@@ -138,11 +145,6 @@ const MarkBubble = ({ mark, isNearby, onClick }) => {
 
         {/* Bubble stem/pointer */}
         <div className="bubble-stem"></div>
-
-        {/* Pulse animation for nearby/recent marks */}
-        {isNearby && isRecent() && (
-          <div className="bubble-pulse"></div>
-        )}
       </div>
     </OverlayView>
   );

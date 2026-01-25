@@ -1,5 +1,5 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
-import { GoogleMap, useLoadScript, Marker, Circle } from '@react-google-maps/api';
+import { GoogleMap, useLoadScript, Marker } from '@react-google-maps/api';
 import { useGeolocation } from '../../hooks/useGeolocation';
 import { useProximity } from '../../hooks/useProximity';
 import { getMarksInBounds } from '../../services/marksService';
@@ -9,7 +9,7 @@ import './MapView.css';
 
 const mapContainerStyle = {
   width: '100%',
-  height: '100vh',
+  height: '100%',
 };
 
 const defaultCenter = {
@@ -74,29 +74,46 @@ const mapOptions = {
   fullscreenControl: false,
   clickableIcons: false,
   gestureHandling: 'greedy',
+  draggable: true,
+  scrollwheel: true,
+  disableDoubleClickZoom: false,
   styles: mapStyles,
 };
 
 const MapView = ({ onMarkClick, onCreateClick }) => {
   const [marks, setMarks] = useState([]);
-  const [mapCenter, setMapCenter] = useState(defaultCenter);
-  const [zoom, setZoom] = useState(15);
   const mapRef = useRef(null);
+
+  // Static initial values - don't update these to keep map draggable
+  const initialMapCenter = useRef(defaultCenter);
+  const initialMapZoom = useRef(15);
 
   const { location, error: locationError, loading: locationLoading } = useGeolocation();
   const { nearbyMarks, hasNearbyMarks } = useProximity(location, marks);
+
+  // Debug logging
+  useEffect(() => {
+    console.log('Marks state:', marks);
+    console.log('Nearby marks:', nearbyMarks);
+  }, [marks, nearbyMarks]);
 
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
   });
 
-  // Update map center when user location is obtained
+  // Pan to user location when first obtained
   useEffect(() => {
-    if (location && !locationLoading) {
-      setMapCenter({
+    if (location && !locationLoading && mapRef.current) {
+      const newCenter = {
         lat: location.latitude,
         lng: location.longitude,
-      });
+      };
+
+      // Only pan to location once when first loaded
+      if (initialMapCenter.current === defaultCenter) {
+        initialMapCenter.current = newCenter;
+        mapRef.current.panTo(newCenter);
+      }
     }
   }, [location, locationLoading]);
 
@@ -117,6 +134,7 @@ const MapView = ({ onMarkClick, onCreateClick }) => {
         ne.lng(),
         sw.lng()
       );
+      console.log('Fetched marks:', fetchedMarks);
       setMarks(fetchedMarks);
     } catch (error) {
       console.error('Error fetching marks:', error);
@@ -134,20 +152,24 @@ const MapView = ({ onMarkClick, onCreateClick }) => {
         lat: location.latitude,
         lng: location.longitude,
       });
-      setZoom(16);
+      mapRef.current.setZoom(16);
     }
   }, [location]);
 
   const handleMarkerClick = useCallback(
     (mark) => {
+      console.log('Mark clicked:', mark);
+
       if (!location) {
         alert('Waiting for your location...');
         return;
       }
 
       const isNearby = nearbyMarks.some((m) => m.id === mark.id);
+      console.log('Is nearby:', isNearby);
 
       if (isNearby) {
+        console.log('Opening mark display');
         onMarkClick?.(mark);
       } else {
         alert(`You need to be within ${PROXIMITY_RADIUS}m to view this mark.`);
@@ -201,41 +223,27 @@ const MapView = ({ onMarkClick, onCreateClick }) => {
     <div className="map-container">
       <GoogleMap
         mapContainerStyle={mapContainerStyle}
-        center={mapCenter}
-        zoom={zoom}
+        center={initialMapCenter.current}
+        zoom={initialMapZoom.current}
         options={mapOptions}
         onLoad={handleLoad}
         onIdle={handleMapIdle}
-        onClick={handleMapClick}
       >
         {/* User location marker */}
         {location && (
-          <>
-            <Marker
-              position={{ lat: location.latitude, lng: location.longitude }}
-              icon={{
-                path: google.maps.SymbolPath.CIRCLE,
-                scale: 8,
-                fillColor: '#4285F4',
-                fillOpacity: 1,
-                strokeColor: '#ffffff',
-                strokeWeight: 2,
-              }}
-              title="Your location"
-            />
-            {/* Proximity radius circle */}
-            <Circle
-              center={{ lat: location.latitude, lng: location.longitude }}
-              radius={PROXIMITY_RADIUS}
-              options={{
-                fillColor: '#4285F4',
-                fillOpacity: 0.1,
-                strokeColor: '#4285F4',
-                strokeOpacity: 0.3,
-                strokeWeight: 1,
-              }}
-            />
-          </>
+          <Marker
+            position={{ lat: location.latitude, lng: location.longitude }}
+            icon={{
+              path: google.maps.SymbolPath.CIRCLE,
+              scale: 10,
+              fillColor: '#4285F4',
+              fillOpacity: 1,
+              strokeColor: '#ffffff',
+              strokeWeight: 3,
+            }}
+            title="Your location"
+            zIndex={1000}
+          />
         )}
 
         {/* Mark bubbles */}
@@ -258,14 +266,24 @@ const MapView = ({ onMarkClick, onCreateClick }) => {
       <div className="map-controls">
         <button
           className="map-control-btn"
-          onClick={() => setZoom((z) => Math.min(z + 1, 20))}
+          onClick={() => {
+            if (mapRef.current) {
+              const currentZoom = mapRef.current.getZoom();
+              mapRef.current.setZoom(Math.min(currentZoom + 1, 20));
+            }
+          }}
           title="Zoom in"
         >
           <span>+</span>
         </button>
         <button
           className="map-control-btn"
-          onClick={() => setZoom((z) => Math.max(z - 1, 10))}
+          onClick={() => {
+            if (mapRef.current) {
+              const currentZoom = mapRef.current.getZoom();
+              mapRef.current.setZoom(Math.max(currentZoom - 1, 10));
+            }
+          }}
           title="Zoom out"
         >
           <span>−</span>
@@ -278,6 +296,14 @@ const MapView = ({ onMarkClick, onCreateClick }) => {
           <span className="recenter-icon">◎</span>
         </button>
       </div>
+
+      {/* Debug: Show marks count */}
+      {marks.length > 0 && (
+        <div className="distance-hint" style={{ bottom: '160px' }}>
+          <span>📍</span>
+          {marks.length} marks found ({nearbyMarks.length} nearby)
+        </div>
+      )}
 
       {/* Distance hint for distant marks */}
       {marks.length > 0 && nearbyMarks.length === 0 && (

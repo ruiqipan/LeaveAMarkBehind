@@ -26,6 +26,15 @@
   animation: slideUp 0.3s ease-out;
 }
 
+.snapshot-container.embedded {
+  max-width: 100%;
+  max-height: none;
+  border-radius: 0;
+  box-shadow: none;
+  animation: none;
+  height: 100%;
+}
+
 .snapshot-header {
   display: flex;
   justify-content: space-between;

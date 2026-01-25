@@ -1,8 +1,13 @@
 .map-container {
   position: relative;
   width: 100%;
-  height: 100vh;
+  height: calc(100vh - 70px); /* Account for bottom nav */
   overflow: hidden;
+  touch-action: manipulation; /* Enable all touch gestures */
+}
+
+.map-container > div {
+  touch-action: manipulation; /* Allow map interaction */
 }
 
 .map-loading,
@@ -106,10 +111,10 @@
   }
 }
 
-/* Ensure map fills viewport on mobile */
-.map-container > div {
+/* Ensure map fills viewport on mobile - target only the Google Maps container (first child) */
+.map-container > div:first-child {
   width: 100% !important;
-  height: 100vh !important;
+  height: 100% !important;
 }
 
 /* Map controls */
@@ -137,6 +142,10 @@
   transition: all 0.2s ease;
   font-size: 1.5rem;
   color: #374151;
+  /* Better touch handling */
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  user-select: none;
 }
 
 .map-control-btn:hover {
@@ -192,27 +201,41 @@
 /* Mobile optimizations for controls */
 @media (max-width: 768px) {
   .map-controls {
-    bottom: 120px;
-    left: 12px;
+    bottom: 110px;
+    left: 16px;
+    gap: 10px;
   }
 
   .map-control-btn {
-    width: 40px;
-    height: 40px;
-    font-size: 1.25rem;
+    width: 48px;
+    height: 48px;
+    font-size: 1.375rem;
+    border-radius: 14px;
   }
 
   .distance-hint {
-    bottom: 80px;
-    font-size: 12px;
-    padding: 8px 16px;
+    bottom: 90px;
+    font-size: 13px;
+    padding: 10px 18px;
+  }
+
+  .nearby-indicator {
+    top: 16px;
+    padding: 10px 20px;
+    font-size: 13px;
   }
 }
 
 /* Safe area adjustments */
 @supports (padding: max(0px)) {
   .map-controls {
-    left: max(16px, env(safe-area-inset-left) + 8px);
-    bottom: max(140px, env(safe-area-inset-bottom) + 100px);
+    left: max(16px, env(safe-area-inset-left) + 12px);
+    bottom: max(110px, env(safe-area-inset-bottom) + 90px);
+  }
+
+  @media (max-width: 768px) {
+    .nearby-indicator {
+      top: max(16px, env(safe-area-inset-top) + 8px);
+    }
   }
 }
