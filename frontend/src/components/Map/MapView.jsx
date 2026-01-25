@@ -82,6 +82,7 @@ const mapOptions = {
 
 const MapView = ({ onMarkClick, onCreateClick }) => {
   const [marks, setMarks] = useState([]);
+  const [showInfoBubble, setShowInfoBubble] = useState(false);
   const mapRef = useRef(null);
 
   // Static initial values - don't update these to keep map draggable
@@ -296,6 +297,83 @@ const MapView = ({ onMarkClick, onCreateClick }) => {
           <span className="recenter-icon">◎</span>
         </button>
       </div>
+
+      {/* Info button */}
+      <button 
+        className="map-info-btn"
+        onClick={() => setShowInfoBubble(true)}
+        aria-label="More information"
+        title="How it works"
+      >
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+        </svg>
+      </button>
+
+      {/* Info Bubble Modal */}
+      {showInfoBubble && (
+        <div className="map-info-overlay" onClick={() => setShowInfoBubble(false)}>
+          <div className="map-info-bubble" onClick={(e) => e.stopPropagation()}>
+            <button 
+              className="map-info-bubble-close"
+              onClick={() => setShowInfoBubble(false)}
+              aria-label="Close"
+            >
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+              </svg>
+            </button>
+            
+            <div className="map-info-bubble-header">
+              <span className="map-info-bubble-icon">🗺️</span>
+              <h3>How to Use the Map</h3>
+            </div>
+            
+            <div className="map-info-bubble-content">
+              <div className="map-info-section">
+                <div className="map-info-item">
+                  <span className="map-info-item-icon">📍</span>
+                  <div>
+                    <h4>Discover Marks</h4>
+                    <p>Marks are location-based messages left by others. They appear as bubbles on the map.</p>
+                  </div>
+                </div>
+                
+                <div className="map-info-item">
+                  <span className="map-info-item-icon">🚶</span>
+                  <div>
+                    <h4>Get Close to View</h4>
+                    <p>You must be within <strong>50 meters</strong> of a mark to view its content. Walk towards the bubbles!</p>
+                  </div>
+                </div>
+                
+                <div className="map-info-item">
+                  <span className="map-info-item-icon">✨</span>
+                  <div>
+                    <h4>Leave Your Mark</h4>
+                    <p>Tap the <strong>purple button</strong> at the bottom to leave a text, photo, drawing, or audio mark at your current location.</p>
+                  </div>
+                </div>
+                
+                <div className="map-info-item">
+                  <span className="map-info-item-icon">⏳</span>
+                  <div>
+                    <h4>Ephemeral Content</h4>
+                    <p>Marks are temporary and will disappear after some time, keeping the experience fresh and in-the-moment.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <button 
+              className="map-info-bubble-dismiss"
+              onClick={() => setShowInfoBubble(false)}
+            >
+              Got it!
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Marks count indicator */}
       {marks.length > 0 && (
