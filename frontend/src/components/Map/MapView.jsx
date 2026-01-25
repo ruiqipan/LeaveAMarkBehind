@@ -343,7 +343,7 @@ const MapView = ({ onMarkClick, onCreateClick }) => {
                   <span className="map-info-item-icon">🚶</span>
                   <div>
                     <h4>Get Close to View</h4>
-                    <p>You must be within <strong>50 meters</strong> of a mark to view its content. Walk towards the bubbles!</p>
+                    <p>You must be within <strong>75 meters</strong> of a mark to view its content. Walk towards the bubbles!</p>
                   </div>
                 </div>
                 
