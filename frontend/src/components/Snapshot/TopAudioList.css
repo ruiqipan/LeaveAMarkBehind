@@ -123,9 +123,30 @@
 .waveform-bar {
   flex: 1;
   max-width: 4px;
+  height: var(--base-height, 50%);
   background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
   border-radius: 2px;
-  transition: opacity 0.1s ease;
+  transition: opacity 0.15s ease, height 0.15s ease;
+}
+
+/* Only animate bars when audio is playing */
+.waveform-bar.animating {
+  animation: waveform-bounce 0.6s ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+}
+
+@keyframes waveform-bounce {
+  0%, 100% {
+    height: var(--base-height, 50%);
+  }
+  50% {
+    height: calc(var(--base-height, 50%) * 0.4 + 20%);
+  }
+}
+
+/* Playing state styles */
+.waveform-container.playing .waveform-bar {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
 .progress-overlay {

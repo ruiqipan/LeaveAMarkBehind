@@ -109,18 +109,23 @@ const TopAudioList = ({ marks, onMarkClick }) => {
                 )}
               </button>
               
-              <div className="waveform-container">
+              <div className={`waveform-container ${playingId === mark.id ? 'playing' : ''}`}>
                 <div className="waveform-bars">
-                  {[...Array(20)].map((_, i) => (
-                    <div 
-                      key={i} 
-                      className="waveform-bar"
-                      style={{ 
-                        height: `${Math.random() * 60 + 40}%`,
-                        opacity: (progress[mark.id] || 0) > (i / 20) * 100 ? 1 : 0.3
-                      }}
-                    />
-                  ))}
+                  {[...Array(20)].map((_, i) => {
+                    // Generate consistent heights based on index
+                    const baseHeight = 30 + ((i * 7 + 13) % 50);
+                    return (
+                      <div 
+                        key={i} 
+                        className={`waveform-bar ${playingId === mark.id ? 'animating' : ''}`}
+                        style={{ 
+                          '--base-height': `${baseHeight}%`,
+                          '--delay': `${i * 0.05}s`,
+                          opacity: (progress[mark.id] || 0) > (i / 20) * 100 ? 1 : 0.4
+                        }}
+                      />
+                    );
+                  })}
                 </div>
                 <div 
                   className="progress-overlay"
