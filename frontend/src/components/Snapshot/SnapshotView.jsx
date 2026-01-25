@@ -47,9 +47,10 @@ const sampleAudioMarks = [
   {
     id: 'audio-1',
     content: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
-    title: 'City Hall Plaza',
+    title: 'Rush Hour Traffic on Broad St',
     location: 'Center City',
-    duration: '2:34',
+    duration: '0:45',
+    category: 'city',
     created_at: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString(),
     view_count: 198,
     add_count: 24,
@@ -57,9 +58,10 @@ const sampleAudioMarks = [
   {
     id: 'audio-2',
     content: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3',
-    title: 'UPenn Locust Walk',
-    location: 'University City',
-    duration: '1:45',
+    title: 'Jazz Saxophone at Rittenhouse',
+    location: 'Rittenhouse',
+    duration: '2:34',
+    category: 'music',
     created_at: new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString(),
     view_count: 156,
     add_count: 18,
@@ -67,9 +69,10 @@ const sampleAudioMarks = [
   {
     id: 'audio-3',
     content: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3',
-    title: 'Reading Terminal Market',
+    title: 'Reading Terminal Market Chatter',
     location: 'Market East',
-    duration: '3:12',
+    duration: '1:12',
+    category: 'city',
     created_at: new Date(Date.now() - 9 * 60 * 60 * 1000).toISOString(),
     view_count: 134,
     add_count: 11,
@@ -77,9 +80,10 @@ const sampleAudioMarks = [
   {
     id: 'audio-4',
     content: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3',
-    title: 'Rittenhouse Square',
-    location: 'Rittenhouse',
-    duration: '0:58',
+    title: 'SEPTA Subway Arriving',
+    location: 'City Hall Station',
+    duration: '0:28',
+    category: 'city',
     created_at: new Date(Date.now() - 14 * 60 * 60 * 1000).toISOString(),
     view_count: 112,
     add_count: 9,
@@ -87,9 +91,10 @@ const sampleAudioMarks = [
   {
     id: 'audio-5',
     content: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3',
-    title: 'South Street Buskers',
-    location: 'South Philly',
-    duration: '4:20',
+    title: 'South Street Busker Guitar',
+    location: 'South Street',
+    duration: '3:15',
+    category: 'music',
     created_at: new Date(Date.now() - 20 * 60 * 60 * 1000).toISOString(),
     view_count: 98,
     add_count: 7,
@@ -212,7 +217,7 @@ const SnapshotView = ({ onMarkClick, embedded = false }) => {
         <section className="snapshot-section">
           <div className="section-header">
             <h3 className="section-title">
-              <span className="section-icon">🎵</span>
+              <span className="section-icon">🎧</span>
               Top Audio Marks
             </h3>
             <span className="section-badge">Top 5</span>

@@ -38,7 +38,7 @@ const SnapshotPage = () => {
             ) : selectedMark.id?.startsWith('audio-') || selectedMark.content?.includes('soundhelix') || selectedMark.title ? (
               // Audio mark
               <div className="detail-audio-container">
-                <div className="detail-audio-icon">🎵</div>
+                <div className="detail-audio-icon">{selectedMark.category === 'music' ? '🎵' : '🔊'}</div>
                 <h3>{selectedMark.title || 'Audio Mark'}</h3>
                 <audio controls src={selectedMark.content}>
                   Your browser does not support the audio element.

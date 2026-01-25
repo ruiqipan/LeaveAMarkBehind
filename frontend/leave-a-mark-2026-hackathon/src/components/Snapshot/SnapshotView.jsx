@@ -171,7 +171,7 @@ const SnapshotView = ({ location, onClose, onMarkClick }) => {
             {audioMarks.length > 0 && (
               <section className="snapshot-section">
                 <h3 className="section-title">
-                  <span className="section-icon">🎵</span>
+                  <span className="section-icon">🎧</span>
                   Top Audio Marks
                 </h3>
                 <TopAudioList marks={audioMarks} onMarkClick={onMarkClick} />
