@@ -252,13 +252,7 @@ const MapView = ({ onMarkClick, onCreateClick }) => {
         })}
       </GoogleMap>
 
-      {/* Status indicator */}
-      {hasNearbyMarks && (
-        <div className="nearby-indicator">
-          <span className="pulse"></span>
-          {nearbyMarks.length} mark{nearbyMarks.length !== 1 ? 's' : ''} nearby
-        </div>
-      )}
+
 
       {/* Map controls */}
       <div className="map-controls">
