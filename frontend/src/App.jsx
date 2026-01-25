@@ -18,6 +18,8 @@ function App() {
   useEffect(() => {
     console.log("SUPABASE URL:", import.meta.env.VITE_SUPABASE_URL);
     console.log("ANON KEY EXISTS:", !!import.meta.env.VITE_SUPABASE_ANON_KEY);
+    console.log("MAPS KEY EXISTS:", !!import.meta.env.VITE_GOOGLE_MAPS_API_KEY);
+    console.log("MAPS KEY PREFIX:", import.meta.env.VITE_GOOGLE_MAPS_API_KEY?.slice(0, 6));
   }, []);
 
 
