@@ -16,6 +16,19 @@ npm run build
 npm run preview
 ```
 
+### Reset User State (for Testing)
+
+```javascript
+// In browser console - reset onboarding
+localStorage.removeItem('leave-a-mark-onboarding-completed');
+
+// Reset FAB hint
+localStorage.removeItem('leave-a-mark-fab-hint-shown');
+
+// Clear all app state
+localStorage.clear();
+```
+
 ### Supabase Operations
 
 ```bash
@@ -277,6 +290,46 @@ Ctrl+Shift+R (Cmd+Shift+R on Mac)
 # Ctrl+C then npm run dev
 ```
 
+### Component-Specific Testing
+
+```javascript
+// Import helpers in browser console or test files
+
+// Reset onboarding (shows intro screens again)
+import { resetOnboarding } from './components/Onboarding/Onboarding';
+resetOnboarding();
+
+// Reset FAB hint (shows "Leave your mark!" tooltip again)
+import { resetFabHint } from './components/FAB/FloatingActionButton';
+resetFabHint();
+
+// Show toast notification
+import { useToast } from './components/Feedback/Toast';
+const { showToast } = useToast();
+showToast('Test message', 'success'); // types: success, error, info, warning
+```
+
+### App Navigation Structure
+
+```
+/ (HomePage)
+├── MapView - Interactive Google Maps with marks
+├── FloatingActionButton - Create new mark
+├── MarkDisplay - View mark details (modal)
+├── CreateMark - Create new mark (modal)
+└── ToastContainer - Notifications
+
+/snapshot (SnapshotPage)
+├── SnapshotView - Daily archive
+│   ├── TopTextList - Top 5 text marks
+│   ├── TopAudioList - Top 5 audio marks
+│   └── ImageGrid - All image marks
+└── MarkDetailModal - View mark details
+
+BottomNav - Tab navigation (persistent)
+Onboarding - First-time user flow (overlay)
+```
+
 ### Security Checklist
 
 - [ ] RLS policies enabled on all tables
@@ -301,6 +354,11 @@ Ctrl+Shift+R (Cmd+Shift+R on Mac)
 - [ ] Tested on Android
 - [ ] Service Worker working
 - [ ] Offline mode functional
+- [ ] Onboarding flow works correctly
+- [ ] FAB hint appears for new users
+- [ ] Toast notifications display properly
+- [ ] Bottom navigation works between tabs
+- [ ] Haptic feedback works (mobile devices)
 
 ### Support Resources
 
@@ -320,6 +378,18 @@ Ctrl+Shift+R (Cmd+Shift+R on Mac)
 | "Upload failed" | Check storage bucket policies |
 | "Service worker not registered" | Ensure HTTPS in production |
 | "Marks not appearing" | Check is_active flag and RLS policies |
+| Onboarding keeps showing | Check localStorage for `leave-a-mark-onboarding-completed` |
+| FAB hint not dismissing | Check localStorage for `leave-a-mark-fab-hint-shown` |
+| Toast not appearing | Verify ToastContainer is rendered in component tree |
+| Navigation not working | Check React Router setup in App.jsx |
+| Haptic feedback not working | Only works on supported mobile devices |
+
+### New Component LocalStorage Keys
+
+| Key | Purpose |
+|-----|---------|
+| `leave-a-mark-onboarding-completed` | Tracks if user completed onboarding |
+| `leave-a-mark-fab-hint-shown` | Tracks if FAB hint was dismissed |
 
 ---
 

@@ -211,14 +211,14 @@
 @media (max-width: 768px) {
   .create-mark-overlay {
     padding: 0;
-    padding-bottom: 70px; /* Account for bottom nav bar */
+    padding-bottom: 64px; /* Account for mobile bottom nav bar */
     align-items: flex-end;
   }
 
   .create-mark-card {
     max-width: 100%;
-    border-radius: 20px 20px 0 0;
-    max-height: calc(100vh - 70px); /* Account for bottom nav bar */
+    border-radius: 24px 24px 0 0;
+    max-height: calc(100vh - 64px); /* Account for mobile bottom nav bar */
     animation: slideUpMobile 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
@@ -226,27 +226,57 @@
     content: '';
     display: block;
     width: 40px;
-    height: 4px;
+    height: 5px;
+    background: #e5e7eb;
+    border-radius: 3px;
+    margin: 10px auto 6px;
+    /* Visual hint for swipe-to-dismiss */
+    transition: background 0.2s ease;
+  }
+
+  .create-mark-card:active::before {
     background: #d1d5db;
-    border-radius: 2px;
-    margin: 12px auto 8px;
   }
 
   .create-header {
     padding-top: 0.5rem;
   }
 
+  .create-header h2 {
+    font-size: 1.125rem;
+  }
+
   .type-selector {
     grid-template-columns: repeat(4, 1fr);
+    gap: 0.5rem;
   }
 
   .type-btn {
     padding: 0.75rem 0.5rem;
-    font-size: 0.75rem;
+    font-size: 0.6875rem;
+    border-radius: 10px;
   }
 
   .type-icon {
     font-size: 1.25rem;
+  }
+
+  .btn-submit {
+    padding: 0.875rem 1.25rem;
+    font-size: 0.9375rem;
+    border-radius: 10px;
+  }
+
+  .create-form {
+    padding: 1.25rem;
+  }
+
+  .create-info {
+    padding: 0.875rem 1.25rem;
+  }
+
+  .create-info p {
+    font-size: 0.75rem;
   }
 }
 
@@ -265,11 +295,33 @@
 @supports (padding: max(0px)) {
   @media (max-width: 768px) {
     .create-mark-overlay {
-      padding-bottom: calc(70px + env(safe-area-inset-bottom));
+      padding-bottom: calc(64px + env(safe-area-inset-bottom));
     }
     
     .create-mark-card {
-      max-height: calc(100vh - 70px - env(safe-area-inset-bottom));
+      max-height: calc(100vh - 64px - env(safe-area-inset-bottom));
     }
+  }
+}
+
+/* Landscape mode on mobile */
+@media (orientation: landscape) and (max-height: 500px) {
+  .create-mark-overlay {
+    padding: 1rem;
+    align-items: center;
+  }
+
+  .create-mark-card {
+    max-height: 90vh;
+    border-radius: 16px;
+    max-width: 500px;
+  }
+
+  .create-mark-card::before {
+    display: none;
+  }
+
+  .type-selector {
+    grid-template-columns: repeat(4, 1fr);
   }
 }

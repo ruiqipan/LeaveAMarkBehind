@@ -173,6 +173,11 @@ select {
   html {
     font-size: 14px;
   }
+
+  /* Improve touch scrolling */
+  * {
+    -webkit-overflow-scrolling: touch;
+  }
 }
 
 /* Prevent zoom on input focus (iOS) */
@@ -180,9 +185,34 @@ select {
   input[type="text"],
   input[type="email"],
   input[type="tel"],
-  textarea {
+  textarea,
+  select {
     font-size: 16px !important;
   }
+}
+
+/* Improve touch interactions */
+@media (pointer: coarse) {
+  /* Larger touch targets */
+  button,
+  a,
+  [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Remove hover effects on touch devices */
+  button:hover,
+  a:hover {
+    transform: none !important;
+  }
+}
+
+/* Active states for touch feedback */
+button:active,
+a:active,
+[role="button"]:active {
+  opacity: 0.85;
 }
 
 /* Safe area insets for devices with notches */

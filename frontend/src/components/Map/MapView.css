@@ -10,6 +10,26 @@
   touch-action: manipulation; /* Allow map interaction */
 }
 
+/* Mobile height adjustment */
+@media (max-width: 768px) {
+  .map-container {
+    height: calc(100vh - 64px); /* Account for smaller mobile bottom nav */
+  }
+}
+
+/* Safe area adjustment */
+@supports (padding: max(0px)) {
+  .map-container {
+    height: calc(100vh - 70px - env(safe-area-inset-bottom));
+  }
+
+  @media (max-width: 768px) {
+    .map-container {
+      height: calc(100vh - 64px - env(safe-area-inset-bottom));
+    }
+  }
+}
+
 .map-loading,
 .map-error {
   display: flex;

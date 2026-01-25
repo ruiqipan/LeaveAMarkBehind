@@ -14,11 +14,14 @@ This directory contains database migrations and Edge Functions for the Leave A M
 Execute the SQL migrations in order through the Supabase SQL Editor:
 
 1. **001_create_marks_table.sql** - Creates marks table with PostGIS support
-2. **002_create_snapshots_table.sql** - Creates snapshots table for daily archives
-3. **003_create_mark_views_table.sql** - Creates view tracking table
-4. **004_create_indexes.sql** - Creates performance indexes
-5. **005_setup_rls_policies.sql** - Sets up Row Level Security
-6. **006_setup_cron_jobs.sql** - Sets up scheduled jobs (requires pg_cron extension)
+2. **002_add_canvas_type.sql** - Adds canvas/drawing type support
+3. **002_create_snapshots_table.sql** - Creates snapshots table for daily archives
+4. **003_create_mark_views_table.sql** - Creates view tracking table
+5. **004_create_indexes.sql** - Creates performance indexes
+6. **005_setup_rls_policies.sql** - Sets up Row Level Security
+7. **006_setup_cron_jobs.sql** - Sets up scheduled jobs (requires pg_cron extension)
+8. **007_create_helper_functions.sql** - Creates SQL helper functions
+9. **008_setup_storage_policies.sql** - Sets up storage bucket policies
 
 ### Enabling pg_cron
 

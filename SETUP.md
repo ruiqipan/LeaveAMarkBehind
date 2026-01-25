@@ -103,10 +103,13 @@ Visit http://localhost:5173
 
 ## 7. Test the App
 
-1. **Allow location access** when prompted
-2. **Create a mark**: Click the + button
-3. **View marks**: Walk around (or fake your location in browser dev tools)
-4. **Try snapshot**: Click the camera button
+1. **Complete onboarding**: Swipe through the 3-slide intro (or skip)
+2. **Allow location access** when prompted
+3. **Create a mark**: Tap the floating action button (FAB) with the pin icon
+4. **View marks**: Walk around (or fake your location in browser dev tools)
+5. **Check toast**: A success toast should appear when you create a mark
+6. **Navigate to Snapshot**: Use the bottom navigation bar
+7. **Explore Snapshot**: View top text, audio, and image marks
 
 ## Troubleshooting
 
@@ -130,11 +133,31 @@ Visit http://localhost:5173
 - Check bucket policies
 - Verify file size < 10MB
 
+### Onboarding keeps showing
+- Check localStorage for `leave-a-mark-onboarding-completed`
+- Or clear it to test onboarding again: `localStorage.removeItem('leave-a-mark-onboarding-completed')`
+
+### FAB hint not appearing
+- Only shows for first-time users
+- Reset with: `localStorage.removeItem('leave-a-mark-fab-hint-shown')`
+
 ## Next Steps
 
 - Read [DEPLOYMENT.md](./DEPLOYMENT.md) for production deployment
 - Check [README.md](./README.md) for full documentation
 - Explore the codebase in `frontend/src/`
+
+## Key Components to Explore
+
+| Component | Path | Purpose |
+|-----------|------|---------|
+| App | `src/App.jsx` | Main app with routing & onboarding |
+| HomePage | `src/pages/HomePage.jsx` | Main explore view with map |
+| SnapshotPage | `src/pages/SnapshotPage.jsx` | Daily archive view |
+| Onboarding | `src/components/Onboarding/` | First-time user experience |
+| FAB | `src/components/FAB/` | Floating action button |
+| Toast | `src/components/Feedback/` | Notification system |
+| BottomNav | `src/components/Navigation/` | Tab navigation |
 
 ## Quick Commands
 

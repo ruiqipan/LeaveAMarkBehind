@@ -4,13 +4,15 @@
   left: 0;
   right: 0;
   height: 70px;
-  background: white;
-  border-top: 1px solid #e5e7eb;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
   display: flex;
   justify-content: space-around;
   align-items: center;
   z-index: 2000;
-  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.06);
   /* Better touch handling */
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
@@ -23,37 +25,85 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 4px;
-  padding: 8px;
+  gap: 6px;
+  padding: 10px 8px;
   text-decoration: none;
-  color: #6b7280;
-  transition: all 0.2s ease;
+  color: #9ca3af;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
+  position: relative;
   /* Better touch targets */
   min-height: 60px;
 }
 
 .nav-item:active {
-  background: #f3f4f6;
+  transform: scale(0.95);
 }
 
 .nav-item.active {
   color: #667eea;
 }
 
-.nav-icon {
-  font-size: 1.5rem;
-  transition: transform 0.2s ease;
+/* Icon wrapper */
+.nav-icon-wrapper {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.nav-item.active .nav-icon {
+.nav-item.active .nav-icon-wrapper {
   transform: scale(1.1);
 }
 
+.nav-icon-svg {
+  width: 24px;
+  height: 24px;
+}
+
 .nav-label {
-  font-size: 0.75rem;
-  font-weight: 500;
-  text-transform: capitalize;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: color 0.25s ease;
+}
+
+/* Active indicator bar */
+.nav-indicator {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 32px;
+  height: 3px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 0 0 3px 3px;
+  animation: indicator-appear 0.3s ease-out;
+}
+
+@keyframes indicator-appear {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) scaleX(0);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) scaleX(1);
+  }
+}
+
+/* Hover effects for desktop */
+@media (hover: hover) {
+  .nav-item:hover:not(.active) {
+    color: #6b7280;
+  }
+
+  .nav-item:hover .nav-icon-wrapper {
+    transform: translateY(-2px);
+  }
 }
 
 /* Safe area insets for iOS */
@@ -62,4 +112,72 @@
     padding-bottom: max(0px, env(safe-area-inset-bottom));
     height: calc(70px + max(0px, env(safe-area-inset-bottom)));
   }
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  .bottom-nav {
+    height: 64px;
+  }
+
+  .nav-item {
+    min-height: 54px;
+    gap: 4px;
+    padding: 8px;
+  }
+
+  .nav-icon-wrapper {
+    width: 26px;
+    height: 26px;
+  }
+
+  .nav-icon-svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .nav-label {
+    font-size: 0.625rem;
+  }
+
+  .nav-indicator {
+    width: 28px;
+    height: 2.5px;
+  }
+}
+
+/* Landscape mode */
+@media (orientation: landscape) and (max-height: 500px) {
+  .bottom-nav {
+    height: 56px;
+  }
+
+  .nav-item {
+    flex-direction: row;
+    gap: 8px;
+    min-height: 48px;
+  }
+
+  .nav-indicator {
+    display: none;
+  }
+}
+
+/* Dark mode support (future enhancement) */
+@media (prefers-color-scheme: dark) {
+  /* Uncomment when dark mode is implemented */
+  /*
+  .bottom-nav {
+    background: rgba(17, 24, 39, 0.95);
+    border-top-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .nav-item {
+    color: #9ca3af;
+  }
+
+  .nav-item.active {
+    color: #818cf8;
+  }
+  */
 }
