@@ -4,6 +4,11 @@
   left: 0;
   right: 0;
   height: 70px;
+  /* Safe area insets for iOS - applied via padding */
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  padding-left: env(safe-area-inset-left, 0px);
+  padding-right: env(safe-area-inset-right, 0px);
+  box-sizing: content-box; /* Height is content area, padding adds to it */
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
@@ -106,13 +111,6 @@
   }
 }
 
-/* Safe area insets for iOS */
-@supports (padding: max(0px)) {
-  .bottom-nav {
-    padding-bottom: max(0px, env(safe-area-inset-bottom));
-    height: calc(70px + max(0px, env(safe-area-inset-bottom)));
-  }
-}
 
 /* Mobile optimizations */
 @media (max-width: 768px) {
