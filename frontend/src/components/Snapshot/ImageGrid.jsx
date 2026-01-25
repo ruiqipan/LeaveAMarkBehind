@@ -15,10 +15,16 @@ const ImageGrid = ({ marks, onMarkClick }) => {
     setLoadedImages(prev => ({ ...prev, [markId]: true }));
   };
 
+  const handleImageError = (markId) => {
+    // Still mark as loaded to remove placeholder and show fallback state
+    setLoadedImages(prev => ({ ...prev, [markId]: true }));
+  };
+
   // Split marks into columns for masonry effect
+  // Track original index for lazy loading decision
   const columns = [[], []];
   marks.forEach((mark, index) => {
-    columns[index % 2].push(mark);
+    columns[index % 2].push({ ...mark, originalIndex: index });
   });
 
   return (
@@ -39,8 +45,9 @@ const ImageGrid = ({ marks, onMarkClick }) => {
               <img 
                 src={mark.content} 
                 alt="Mark" 
-                loading="lazy"
+                loading={mark.originalIndex < 4 ? "eager" : "lazy"}
                 onLoad={() => handleImageLoad(mark.id)}
+                onError={() => handleImageError(mark.id)}
               />
               <div className="image-overlay">
                 <div className="image-stats">

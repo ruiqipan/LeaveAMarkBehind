@@ -104,7 +104,7 @@ const sampleAudioMarks = [
 // Philadelphia landmark images from Unsplash
 const sampleImageMarks = [
   { id: 'img-1', content: 'https://images.unsplash.com/photo-1569761316261-9a8696fa2ca3?w=400&h=600&fit=crop', view_count: 423, add_count: 34 }, // Philadelphia skyline
-  { id: 'img-2', content: 'https://images.unsplash.com/photo-1601332069884-cce9e64ea1f6?w=400&h=400&fit=crop', view_count: 387, add_count: 28 }, // City Hall
+  { id: 'img-2', content: 'https://images.unsplash.com/photo-1575936123452-b67c3203c357?w=400&h=400&fit=crop', view_count: 387, add_count: 28 }, // City scene
   { id: 'img-3', content: 'https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?w=400&h=500&fit=crop', view_count: 312, add_count: 25 }, // Food
   { id: 'img-4', content: 'https://images.unsplash.com/photo-1555099962-4199c345e5dd?w=400&h=350&fit=crop', view_count: 289, add_count: 21 }, // Street art
   { id: 'img-5', content: 'https://images.unsplash.com/photo-1517457373958-b7bdd4587205?w=400&h=450&fit=crop', view_count: 267, add_count: 19 }, // Architecture

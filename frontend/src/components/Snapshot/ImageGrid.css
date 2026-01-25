@@ -20,6 +20,8 @@
   background: #f0f0f5;
   cursor: pointer;
   transition: transform 0.2s ease;
+  /* Ensure container has height even before image loads */
+  min-height: 120px;
 }
 
 .image-grid-item:active {
@@ -51,9 +53,12 @@
 /* Image */
 .image-grid-item img {
   width: 100%;
+  height: auto;
   display: block;
   opacity: 0;
   transition: opacity 0.3s ease;
+  /* Ensure image is visible even if onLoad doesn't fire */
+  min-height: 100px;
 }
 
 .image-grid-item.loaded img {
