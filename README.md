@@ -2,8 +2,32 @@
 
 A location-based Progressive Web App (PWA) for sharing ephemeral messages, images, and audio at specific GPS coordinates.
 
-Open this link on a phone, tablet, or laptop to try this app!
-https://lamb-mcit.vercel.app/
+**Open this link on a phone, tablet, or laptop to try this app! https://lamb-mcit.vercel.app/**
+
+## Inspiration
+
+City life is full of waiting—on subway platforms, at bus stops, in hospital lobbies. These in-between moments often feel like dead time, spaces where we lose our sense of agency. We scroll endlessly, disconnected from the place we're standing and the strangers sharing it with us.
+
+We were inspired by the graffiti and street art scattered across NYC—those unexpected bursts of creativity that transform mundane walls into moments of discovery. A clever tag, a poetic stencil, a hidden mural—these are gifts left by strangers for strangers, connecting people across time without ever meeting.
+
+**Leave A Mark Behind** was born from a question: *What if we could bring that same magic to the digital world?* What if the boring moments of city life became opportunities to share something—a piece of art, a life hack, a foreign phrase, a meme—for the next person waiting in that exact spot?
+
+## What it does
+
+**Leave A Mark Behind** is a location-based Progressive Web App that transforms idle city moments into shared discoveries:
+
+- **Drop "marks"** at your exact location—text messages, photos, audio recordings, drawings, poems, life hacks, language tips, or memes
+- **Discover marks** left by others within 50-100 meters, seeing what previous strangers shared at the same spot
+- **Learn and react** to content that spans art, humor, wisdom, and everyday creativity
+- **Experience true ephemerality** as all content automatically vanishes after 24 hours—just like the fleeting nature of waiting itself
+- **Engage with threads** by adding replies to existing marks, building on what others started
+- **Browse daily snapshots** of the top content from your area (preserved for 36 hours)
+
+What makes this app fundamentally different is our **Anti-Viral Algorithm**. Unlike traditional social platforms that amplify popular content, we deliberately surface lesser-seen marks using linear inverse weighting:
+
+$$w_i = V_{\max} - v_i + 1, \quad P(\text{mark}_i) = \frac{w_i}{\sum_j w_j}$$
+
+This ensures diverse discovery experiences where every voice has an equal chance of being heard—the quiet poet gets the same spotlight as the prolific memer.
 
 ## Features
 
