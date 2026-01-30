@@ -2,6 +2,9 @@
 
 A location-based Progressive Web App (PWA) for sharing ephemeral messages, images, and audio at specific GPS coordinates.
 
+Open this link on a phone, tablet, or laptop to try this app!
+https://lamb-mcit.vercel.app/
+
 ## Features
 
 - **Location-Based Discovery**: Find marks left by others within 50-100m proximity
@@ -95,7 +98,7 @@ leave-a-mark/
 1. Build the frontend: `npm run build`
 2. Deploy to Vercel/Netlify
 3. Configure custom domain
-4. Users access via browser URL (e.g., https://leaveamark.app)
+4. Users access via browser URL (e.g., https://lamb-mcit.vercel.app/)
 
 ## License
 
