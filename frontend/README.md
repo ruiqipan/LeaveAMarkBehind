@@ -1,16 +1,69 @@
-# React + Vite
+# Leave A Mark Behind - Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is the React frontend for the Leave A Mark Behind PWA.
 
-Currently, two official plugins are available:
+## Tech Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **React 19** with Vite for fast development
+- **React Router** for navigation
+- **Google Maps JavaScript API** for map integration
+- **Supabase JS Client** for backend communication
 
-## React Compiler
+## Quick Start
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```bash
+# Install dependencies
+npm install
 
-## Expanding the ESLint configuration
+# Copy environment template and configure
+cp .env.local.example .env.local
+# Edit .env.local with your credentials
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+# Start development server
+npm run dev
+```
+
+## Project Structure
+
+```
+src/
+├── components/
+│   ├── Create/         # Mark creation (text, image, audio, canvas)
+│   ├── Discovery/      # Mark viewing and anti-viral algorithm
+│   ├── FAB/            # Floating action button
+│   ├── Feedback/       # Toast notifications
+│   ├── Map/            # Google Maps integration
+│   ├── Navigation/     # Bottom tab navigation
+│   ├── Onboarding/     # First-time user experience
+│   └── Snapshot/       # Daily snapshot archive
+├── hooks/              # Custom React hooks
+├── pages/              # Page components
+├── services/           # API and business logic
+└── utils/              # Utility functions
+```
+
+## Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run preview` - Preview production build
+- `npm run lint` - Run ESLint
+
+## Environment Variables
+
+Create a `.env.local` file with:
+
+```env
+VITE_SUPABASE_URL=https://xxxxx.supabase.co
+VITE_SUPABASE_ANON_KEY=your-anon-key
+VITE_GOOGLE_MAPS_API_KEY=your-google-maps-api-key
+```
+
+## Documentation
+
+For detailed setup and deployment instructions, see the documentation in the project root:
+
+- [README.md](../README.md) - Project overview
+- [SETUP.md](../SETUP.md) - Quick start guide
+- [DEPLOYMENT.md](../DEPLOYMENT.md) - Production deployment
+- [QUICK_REFERENCE.md](../QUICK_REFERENCE.md) - Common tasks reference

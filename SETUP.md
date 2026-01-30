@@ -27,13 +27,15 @@ npm install
 Go to **SQL Editor** in Supabase and run each file in order:
 
 1. `supabase/migrations/001_create_marks_table.sql`
-2. `supabase/migrations/002_create_snapshots_table.sql`
-3. `supabase/migrations/003_create_mark_views_table.sql`
-4. `supabase/migrations/004_create_indexes.sql`
-5. `supabase/migrations/005_setup_rls_policies.sql`
-6. Enable pg_cron extension (Database > Extensions)
-7. `supabase/migrations/006_setup_cron_jobs.sql`
-8. `supabase/migrations/007_create_helper_functions.sql`
+2. `supabase/migrations/002_add_canvas_type.sql`
+3. `supabase/migrations/002_create_snapshots_table.sql`
+4. `supabase/migrations/003_create_mark_views_table.sql`
+5. `supabase/migrations/004_create_indexes.sql`
+6. `supabase/migrations/005_setup_rls_policies.sql`
+7. Enable pg_cron extension (Database > Extensions)
+8. `supabase/migrations/006_setup_cron_jobs.sql`
+9. `supabase/migrations/007_create_helper_functions.sql`
+10. `supabase/migrations/008_setup_storage_policies.sql`
 
 ### Create Storage Buckets
 

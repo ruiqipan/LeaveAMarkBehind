@@ -12,7 +12,7 @@ The "Leave A Mark Behind" Progressive Web App has been fully implemented accordi
 - **Services/Utilities**: 6
 - **Database Migrations**: 8 SQL files
 - **Edge Functions**: 2 TypeScript functions
-- **Documentation**: 4 comprehensive guides
+- **Documentation**: 5 comprehensive guides
 - **Pages**: 2 (HomePage, SnapshotPage)
 
 ## Architecture
@@ -167,7 +167,7 @@ supabase/
 - **SQL Migrations**: 8 (.sql files)
 - **TypeScript Functions**: 2 (.ts files)
 - **Configuration**: 5 (.json, .config files)
-- **Documentation**: 4 (.md files)
+- **Documentation**: 5 (.md files)
 
 ## Code Statistics (Estimated)
 
@@ -197,7 +197,8 @@ supabase/
 1. **README.md** - Project overview and features
 2. **SETUP.md** - Quick start guide for local development
 3. **DEPLOYMENT.md** - Comprehensive production deployment guide
-4. **PROJECT_SUMMARY.md** - This file
+4. **QUICK_REFERENCE.md** - Handy reference for common tasks and commands
+5. **PROJECT_SUMMARY.md** - This file
 
 ## What Makes This Special
 
